@@ -23,6 +23,7 @@ const RejectForm: React.FC<RejectFormProps> = ({ onSubmit }) => {
     ptName: '',
     ward: '',
     ln: '',
+    rejectBy: '',
     reasons: {
       reason1: false,
       reason2: false,
@@ -40,7 +41,8 @@ const RejectForm: React.FC<RejectFormProps> = ({ onSubmit }) => {
       reason13_1: false,
       reason13_2: false,
       reason13_3: false,
-      otherReasons: []
+      reason14: false,
+      otherReason: ''
     },
     date: getCurrentDate(),
     time: getCurrentTime()
@@ -52,6 +54,17 @@ const RejectForm: React.FC<RejectFormProps> = ({ onSubmit }) => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleChangeOtherReason = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      reasons: {
+        ...prevData.reasons,
+        [name]: value
+      }
+    }));
   };
 
   const handleReasonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,6 +111,7 @@ const RejectForm: React.FC<RejectFormProps> = ({ onSubmit }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     screenShotPDF();
+    // TODO: Save WARD and Reason to Database because Export Report monthly
     onSubmit(formData);
   };
 
@@ -128,13 +142,13 @@ const RejectForm: React.FC<RejectFormProps> = ({ onSubmit }) => {
         <form className="p-4 max-w-2xl mx-auto bg-white rounded-xl shadow-md space-y-4 mt-6">
         <h2 className="text-xl font-bold text-center">LABORATORY REJECT SPECIMEN</h2>
         <p className="text-center">ในปฏิเสธสิ่งส่งตรวจจากห้องปฏิบัติการ</p>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-2">
           <div>
             <label className="block font-medium text-gray-700">HN</label>
             <input
               type="text"
               name="hn"
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-lg"
               value={formData.hn}
               onChange={handleChange}
             />
@@ -144,33 +158,38 @@ const RejectForm: React.FC<RejectFormProps> = ({ onSubmit }) => {
             <input
               type="text"
               name="ptName"
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-lg"
               value={formData.ptName}
               onChange={handleChange}
             />
           </div>
+          
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
           <div>
             <label className="block font-medium text-gray-700">WARD</label>
             <input
               type="text"
               name="ward"
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-lg"
               value={formData.ward}
               onChange={handleChange}
             />
           </div>
+
+
           <div>
             <label className="block font-medium text-gray-700">LN</label>
-            <select
+            <input
+              type="text"
               name="ln"
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-lg"
               value={formData.ln}
               onChange={handleChange}
-            >
-              <option value="">Select</option>
-              {/* Add options here */}
-            </select>
+            />
           </div>
+          
         </div>
         <div>
           <label className="block font-medium text-gray-700 h-16">กลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก ขอปฏิเสธการรับสิ่งส่งตรวจของผู้ป่วยรายนี้เนื่องจาก</label>
@@ -369,6 +388,26 @@ const RejectForm: React.FC<RejectFormProps> = ({ onSubmit }) => {
 
             </div>
 
+
+            <div>
+              <input
+                type="checkbox"
+                id="reason14"
+                name="reason14"
+                checked={formData.reasons.reason14}
+                onChange={handleReasonChange}
+              />
+              <label htmlFor="reason14" className="ml-2">อื่นๆระบุ</label>
+              <input
+              type="text"
+              name="otherReason"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-lg"
+              value={formData.reasons.otherReason}
+              onChange={handleChangeOtherReason}
+              disabled={!formData.reasons.reason14}
+              />
+            </div>
+
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
@@ -393,6 +432,31 @@ const RejectForm: React.FC<RejectFormProps> = ({ onSubmit }) => {
             />
           </div>
         </div>
+
+
+        <div>
+            <label className="block font-medium text-gray-700">Reject By</label>
+            <select
+              name="rejectBy"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-lg"
+              value={formData.rejectBy}
+              onChange={handleChange}
+            >
+              <option value="">Select</option>
+              <option value="นางสมร วิรุณพันธ์">นางสมร วิรุณพันธ์</option>
+              <option value="นางจินดา สุขแก้ว">นางจินดา สุขแก้ว</option>
+              <option value="นส.ปิยะมาศ  รำจวน">นส.ปิยะมาศ  รำจวน</option>
+              <option value="นส.เตือนใจ นุ่นทอง">นส.เตือนใจ นุ่นทอง</option>
+              <option value="นส.สุสมพงษ์  สารโบก">นส.สุสมพงษ์  สารโบก</option>
+              <option value="นส.เกวลี  มีล่อง">นส.เกวลี  มีล่อง</option>
+              <option value="นส.ชนารดี  ศรีเจ้า">นส.ชนารดี  ศรีเจ้า</option>
+              <option value="นางสำราญ  บุญเต็ม">นางสำราญ  บุญเต็ม</option>
+              <option value="นางเพลินพิศ   พงษ์จีน">นางเพลินพิศ   พงษ์จีน</option>
+              <option value="นส.ชลิตา  สุชชื่น">นส.ชลิตา  สุชชื่น</option>
+              <option value="นางสาวนริศรา  นาคราช">นางสาวนริศรา  นาคราช</option>
+              <option value="นางณัชชา สิทธิชัย">นางณัชชา สิทธิชัย</option>
+            </select>
+          </div>
         </form>
       </div>
       

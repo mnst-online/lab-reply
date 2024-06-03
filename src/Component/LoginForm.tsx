@@ -16,7 +16,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit} className="p-4 max-w-md mx-auto bg-gray-100 rounded-xl shadow-md space-y-4">
       <h2 className="text-xl font-bold text-center">LABORATORY REJECT SPECIMEN</h2>
-      <p className="text-center">โปรแกรมปฏิเสธสิ่งส่งตรวจจากห้องปฏิบัติการ</p>
+      <p className="text-center">โปรแกรมปฏิเสธสิ่งส่งตรวจทางห้องปฏิบัติการ</p>
       <div>
         <label className="block font-medium text-gray-700">USERNAME</label>
         <input
