@@ -455,6 +455,7 @@ const RejectForm: React.FC<RejectFormProps> = ({ onSubmit }) => {
               <option value="นส.ชลิตา  สุชชื่น">นส.ชลิตา  สุชชื่น</option>
               <option value="นางสาวนริศรา  นาคราช">นางสาวนริศรา  นาคราช</option>
               <option value="นางณัชชา สิทธิชัย">นางณัชชา สิทธิชัย</option>
+              <option value="นางสาวภัสสรา สุชาดา">นางสาวภัสสรา สุชาดา</option>
             </select>
           </div>
         </form>
